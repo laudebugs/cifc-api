@@ -2,6 +2,10 @@
 const express = require("express");
 const app = express();
 const GSheetReader = require("g-sheets-api");
+const cheerio = require("cheerio");
+const axios = require("axios");
+const { JSDOM } = require("jsdom");
+const fbpage = require("fbpage");
 
 // use the express-static middleware
 app.use(express.static("public"));
@@ -42,6 +46,12 @@ app.get("/clubs", function (req, res) {
       // OPTIONAL: handle errors here
     }
   );
+});
+app.get("/fbcover", async function (req, res) {
+  var link = req.query.link;
+
+  const myPage = await fbpage("cknyu");
+  res.json({});
 });
 // start the server listening for requests
 app.listen(process.env.PORT || 4000, () => console.log("Server is running..."));

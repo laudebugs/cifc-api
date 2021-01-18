@@ -10,7 +10,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.21.1",
+    "cheerio": "^1.0.0-rc.5",
     "express": "^4.17.1",
-    "g-sheets-api": "^1.4.0"
+    "facebook-nologin-scraper": "^0.1.0",
+    "fbpage": "^1.1.0",
+    "g-sheets-api": "^1.4.0",
+    "jsdom": "^16.4.0"
   }
 }
