@@ -35,7 +35,17 @@ app.get("/clubs", function (req, res) {
   GSheetReader(
     options,
     (results) => {
-      res.json(results);
+      const getData = Promise.all(
+        results.map(async (club) => {
+          if (club["Facebook"]) {
+            club.coverImageLink = await getFbCover(club["Facebook"]);
+          }
+        })
+      );
+
+      getData.then((data) => {
+        res.json(results);
+      });
 
       // do something with the results here
     },
@@ -44,6 +54,22 @@ app.get("/clubs", function (req, res) {
     }
   );
 });
+async function getFbCover(link) {
+  let begin = link.indexOf("com");
+  let pageName = link.substring(begin + 4);
+  if (pageName[pageName.length - 1] === "/") {
+    console.log("remove backslash");
+    pageName = pageName.substring(0, pageName.length - 1);
+  }
+  try {
+    const photoLink = await helperFuncs.getCoverPhoto(pageName);
+    return photoLink;
+  } catch (error) {
+    console.log(error);
+    // if there is an error send a blank link
+    return "";
+  }
+}
 app.get("/fbcover", async function (req, res) {
   var link = req.query.link;
   let begin = link.indexOf("com");

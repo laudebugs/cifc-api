@@ -56,7 +56,6 @@ module.exports = {
         curr += 1;
       }
       var data = JSON.parse(string.substring(index, curr) + "}");
-      console.log(data.coverPhotoData.uri);
       return data.coverPhotoData.uri;
     });
   },
