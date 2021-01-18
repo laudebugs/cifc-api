@@ -38,7 +38,14 @@ app.get("/clubs", function (req, res) {
       const getData = Promise.all(
         results.map(async (club) => {
           if (club["Facebook"]) {
-            club.coverImageLink = await getFbCover(club["Facebook"]);
+            let linkToImage = await getFbCover(club["Facebook"]);
+            /**
+             * The only reason this can happen is if the link to the facebook
+             * page is incorrect
+             */
+            if (linkToImage !== "") {
+              club.coverImageLink = linkToImage;
+            }
           }
         })
       );
