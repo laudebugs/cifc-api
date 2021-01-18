@@ -16,6 +16,8 @@
     "facebook-nologin-scraper": "^0.1.0",
     "fbpage": "^1.1.0",
     "g-sheets-api": "^1.4.0",
-    "jsdom": "^16.4.0"
+    "got": "^11.8.1",
+    "jsdom": "^16.4.0",
+    "url": "^0.11.0"
   }
 }
