@@ -69,11 +69,14 @@ app.get("/fbcover", async function (req, res) {
   }
   try {
     const photoLink = await helperFuncs.getCoverPhoto(pageName);
-    res.send(photoLink);
+    res.json({ coverPhotoLink: photoLink });
   } catch (error) {
     console.log(error);
     // if there is an error send a blank link
-    res.send("https://mcdn.wallpapersafari.com/medium/36/29/9hlsuO.png");
+    res.json({
+      coverPhotoLink:
+        "https://mcdn.wallpapersafari.com/medium/36/29/9hlsuO.png",
+    });
   }
 });
 // start the server listening for requests
