@@ -56,21 +56,24 @@ async function getFbCover(link) {
   } catch (error) {
     console.log(error);
     // if there is an error send a blank link
-    return "";
+    return "https://mcdn.wallpapersafari.com/medium/36/29/9hlsuO.png";
   }
 }
 app.get("/fbcover", async function (req, res) {
   var link = req.query.link;
   let begin = link.indexOf("com");
   let pageName = link.substring(begin + 4);
-
+  if (pageName[pageName.length - 1] === "/") {
+    console.log("remove backslash");
+    pageName = pageName.substring(0, pageName.length - 1);
+  }
   try {
     const photoLink = await helperFuncs.getCoverPhoto(pageName);
-    res.json({ coverPhotoLink: photoLink });
+    res.send(photoLink);
   } catch (error) {
     console.log(error);
     // if there is an error send a blank link
-    res.json({ coverPhotoLink: "" });
+    res.send("https://mcdn.wallpapersafari.com/medium/36/29/9hlsuO.png");
   }
 });
 // start the server listening for requests
