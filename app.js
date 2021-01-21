@@ -35,25 +35,7 @@ app.get("/clubs", function (req, res) {
   GSheetReader(
     options,
     (results) => {
-      const getData = Promise.all(
-        results.map(async (club) => {
-          if (club["Facebook"]) {
-            let linkToImage = await getFbCover(club["Facebook"]);
-            /**
-             * The only reason this can happen is if the link to the facebook
-             * page is incorrect
-             */
-            if (linkToImage !== "") {
-              club.coverImageLink = linkToImage;
-            }
-          }
-        })
-      );
-
-      getData.then((data) => {
-        res.json(results);
-      });
-
+      res.json(results);
       // do something with the results here
     },
     (error) => {
