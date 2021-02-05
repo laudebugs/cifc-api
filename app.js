@@ -7,6 +7,12 @@ const helperFuncs = require("./helperFuncs");
 // use the express-static middleware
 app.use(express.static("public"));
 
+app.all("/", function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
+
 // define the first route
 app.get("/calendar", function (req, res) {
   const options = {
