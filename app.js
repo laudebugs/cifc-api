@@ -3,9 +3,11 @@ const express = require("express");
 const app = express();
 const GSheetReader = require("g-sheets-api");
 const helperFuncs = require("./helperFuncs");
+const cors = require("cors");
 
 // use the express-static middleware
 app.use(express.static("public"));
+app.use(cors());
 
 app.all("/", function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
