@@ -87,5 +87,10 @@ app.get("/fbcover", async function (req, res) {
     });
   }
 });
+
+app.get("*", (req, res) => {
+  res.json({ message: "how did you land here?" });
+});
+
 // start the server listening for requests
 app.listen(process.env.PORT || 4000, () => console.log("Server is running..."));
