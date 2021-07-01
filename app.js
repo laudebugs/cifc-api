@@ -72,14 +72,14 @@ app.get("/fbcover", async function (req, res) {
   let begin = link.indexOf("com");
   let pageName = link.substring(begin + 4);
   if (pageName[pageName.length - 1] === "/") {
-    console.log("remove backslash");
     pageName = pageName.substring(0, pageName.length - 1);
+    console.log(pageName);
   }
   try {
     const photoLink = await helperFuncs.getCoverPhoto(pageName);
     res.json({ coverPhotoLink: photoLink });
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     // if there is an error send a blank link
     res.json({
       coverPhotoLink:
