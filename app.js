@@ -65,6 +65,7 @@ const { GoogleSpreadsheet } = require('google-spreadsheet');
     }
     try {
       const photoLink = await helperFuncs.getCoverPhoto(pageName);
+      console.log(photoLink);
       res.json(JSON.stringify({ coverPhotoLink: photoLink }));
     } catch (error) {
       console.log(error.message);
