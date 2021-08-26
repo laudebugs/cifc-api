@@ -56,6 +56,7 @@ const { GoogleSpreadsheet } = require('google-spreadsheet');
     }
   }
   app.get("/fbcover", async function (req, res) {
+    console.log(req)
     var link = req.query.link;
     let begin = link.indexOf("com");
     let pageName = link.substring(begin + 4);
