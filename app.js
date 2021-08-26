@@ -6,8 +6,6 @@ const helperFuncs = require("./helperFuncs");
 const cors = require("cors");
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 
-const creds = require('./config.json');
-
 (async function() {
   const doc = new GoogleSpreadsheet(process.env.G_SHEETS_ID);
   // await doc.useServiceAccountAuth(creds);
