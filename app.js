@@ -10,7 +10,8 @@ const creds = require('./config.json');
 
 (async function() {
   const doc = new GoogleSpreadsheet(process.env.G_SHEETS_ID);
-  await doc.useServiceAccountAuth(creds);
+  // await doc.useServiceAccountAuth(creds);
+  await doc.useApiKey(process.env.CIFC_API_KEY);
   await doc.loadInfo()
   console.log(doc.title)
 
