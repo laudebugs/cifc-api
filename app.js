@@ -8,10 +8,23 @@ const { GoogleSpreadsheet } = require('google-spreadsheet');
 
 (async function() {
   const doc = new GoogleSpreadsheet(process.env.G_SHEETS_ID);
-  // await doc.useServiceAccountAuth(creds);
   await doc.useApiKey(process.env.CIFC_API_KEY);
   await doc.loadInfo()
-  console.log(doc.title)
+  
+  const sheet = doc.sheetsByIndex[0];
+  const rows = await sheet.getRows();
+  rows.forEach(async (row, i) => {
+    const fbLink = row._rawData[9]
+    if(!fbLink) {
+       rows[i].coverImage = "https://mcdn.wallpapersafari.com/medium/36/29/9hlsuO.png";
+       await rows[i].save();
+    }
+    else {
+      const coverImage = await getFbCover(fbLink);
+      rows[i].coverImage = coverImage;
+      await rows[i].save();
+    } 
+  })
 
   // use the express-static middleware
   app.use(express.static("public"));
@@ -33,7 +46,7 @@ const { GoogleSpreadsheet } = require('google-spreadsheet');
     const rows = await sheet.getRows();
     console.log(rows)
     const defaultRows = rows.map(row => {
-      return row. _rawData
+      return row._rawData
     })
     // console.log(defaultRows)
     res.json({data: defaultRows});

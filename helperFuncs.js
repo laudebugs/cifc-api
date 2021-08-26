@@ -44,6 +44,7 @@ module.exports = {
       });
 
       let string = response.body;
+      console.log(string)
       let index = string.indexOf('{"coverPhotoData');
       // start from the index
       let curr = index;
