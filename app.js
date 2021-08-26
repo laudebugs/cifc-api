@@ -11,20 +11,20 @@ const { GoogleSpreadsheet } = require('google-spreadsheet');
   await doc.useApiKey(process.env.CIFC_API_KEY);
   await doc.loadInfo()
   
-  const sheet = doc.sheetsByIndex[0];
-  const rows = await sheet.getRows();
-  rows.forEach(async (row, i) => {
-    const fbLink = row._rawData[9]
-    if(!fbLink) {
-       rows[i].coverImage = "https://mcdn.wallpapersafari.com/medium/36/29/9hlsuO.png";
-       await rows[i].save();
-    }
-    else {
-      const coverImage = await getFbCover(fbLink);
-      rows[i].coverImage = coverImage;
-      await rows[i].save();
-    } 
-  })
+  // const sheet = doc.sheetsByIndex[0];
+  // const rows = await sheet.getRows();
+  // rows.forEach(async (row, i) => {
+  //   const fbLink = row._rawData[9]
+  //   if(!fbLink) {
+  //      rows[i].coverImage = "https://mcdn.wallpapersafari.com/medium/36/29/9hlsuO.png";
+  //      await rows[i].save();
+  //   }
+  //   else {
+  //     const coverImage = await getFbCover(fbLink);
+  //     rows[i].coverImage = coverImage;
+  //     await rows[i].save();
+  //   } 
+  // })
 
   // use the express-static middleware
   app.use(express.static("public"));
