@@ -5,27 +5,15 @@ const app = express();
 const helperFuncs = require("./helperFuncs");
 const cors = require("cors");
 const { GoogleSpreadsheet } = require('google-spreadsheet');
+var fs = require('fs');
+const clubCovers = require('./clubs.json');
 
 (async function() {
   const doc = new GoogleSpreadsheet(process.env.G_SHEETS_ID);
   await doc.useApiKey(process.env.CIFC_API_KEY);
   await doc.loadInfo()
   
-  // const sheet = doc.sheetsByIndex[0];
-  // const rows = await sheet.getRows();
-  // rows.forEach(async (row, i) => {
-  //   const fbLink = row._rawData[9]
-  //   if(!fbLink) {
-  //      rows[i].coverImage = "https://mcdn.wallpapersafari.com/medium/36/29/9hlsuO.png";
-  //      await rows[i].save();
-  //   }
-  //   else {
-  //     const coverImage = await getFbCover(fbLink);
-  //     rows[i].coverImage = coverImage;
-  //     await rows[i].save();
-  //   } 
-  // })
-
+  
   // use the express-static middleware
   app.use(express.static("public"));
   app.use(cors());
@@ -44,11 +32,11 @@ const { GoogleSpreadsheet } = require('google-spreadsheet');
   app.get("/clubs", async function (req, res) {
     const sheet = doc.sheetsByIndex[0];
     const rows = await sheet.getRows();
-    console.log(rows)
     const defaultRows = rows.map(row => {
+      const clubdata = row._rawData
+      clubdata.push(clubCovers[clubdata[0]])
       return row._rawData
     })
-    // console.log(defaultRows)
     res.json({data: defaultRows});
   });
   
@@ -67,6 +55,29 @@ const { GoogleSpreadsheet } = require('google-spreadsheet');
       // if there is an error send a blank link
       return "https://mcdn.wallpapersafari.com/medium/36/29/9hlsuO.png";
     }
+  }
+  async function retrievClubFBCoverPhotos(document){
+    const sheet = document.sheetsByIndex[0];
+    const rows = await sheet.getRows();
+    const data = Promise.all(rows.map(async (row, i) => {
+      const fbLink = row._rawData[9]
+      if(!fbLink) {
+         let coverImage = "https://mcdn.wallpapersafari.com/medium/36/29/9hlsuO.png";
+         return Promise.resolve({club: row._rawData[0], image: coverImage})
+      }
+      else {
+        let cover = await getFbCover(fbLink)
+        console.log(cover)
+        return Promise.resolve({club: row._rawData[0], image: cover})
+      } 
+    }))
+    data.then(res => {
+      const library = {}
+      res.forEach(club => {
+        library[club.club] = club.image
+      })
+      fs.writeFileSync('clubs.json', JSON.stringify(library))
+    })
   }
   app.get("/fbcover", async function (req, res) {
     console.log(req)
